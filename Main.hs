@@ -17,7 +17,7 @@ read_cache_servers count = liftM Map.fromList $ (read_cache_servers_assoc count)
 
 
 read_endpoints :: Int -> IO [EndPoint]
-read_endpoints count = map (\x ->  do
+read_endpoints count = sequence $ map (\x ->  do
         endpoint_line <- getLine
         -- EndPoint parameters
         let [latency, cache_count] = map read $ words endpoint_line :: [Int]
@@ -34,9 +34,11 @@ main = do
     config_line <- getLine
     video_size_line <- getLine
     -- First line is for describing global structure
-    let [conf_V, conf_E, conf_R, conf_C, conf_X] = map read . words config_line
+    let [conf_V, conf_E, conf_R, conf_C, conf_X] = map read $ words config_line :: [Int]
 
-    let video_sizes = map read . words video_size_line
+    let words_sizes = words video_size_line
+    
+    let video_sizes =  (read :: String -> Int) video_size_line 
 
     -- Parse each endpoints 
     let endpoints   = read_endpoints conf_E 

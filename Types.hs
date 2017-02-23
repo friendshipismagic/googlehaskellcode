@@ -1,4 +1,4 @@
-module Types ( Solution(..), Request, EndPoint(..) ) where
+module Types ( Solution(..), Request(..), EndPoint(..) ) where
 
     import qualified Data.Map.Strict as Map
 

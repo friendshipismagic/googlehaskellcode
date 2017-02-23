@@ -1,14 +1,20 @@
+module Eval (evalSolution) where
+
 import Types
 import qualified Data.Map.Strict as M
+import Data.Function
+
+foo :: Int -> Int -> Float
+foo = (/) `on` fromIntegral
 
 evalSolution :: [EndPoint] -> Solution -> Int
-evalSolution endpoints sol = (1000*(sum gains)) / n
+evalSolution endpoints sol = (1000*(sum gains)) `foo` n
     where
-        gains = map (\x -> requestGains x sol) endpoints
+        gains = concat $ map (\x -> requestGains x sol) endpoints
         n = sum $ map numberOfRequests endpoints
 
 numberOfRequests :: EndPoint -> Int
-numberOfRequests e = foldr (\m (x,_) -> m+x) 0 $ requests e
+numberOfRequests e = foldr (\(Request _ n) m -> m+n) 0 $ requests e
 
 requestGains :: EndPoint -> Solution -> [Int]
 requestGains e sol =
