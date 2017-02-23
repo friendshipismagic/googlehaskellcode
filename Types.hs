@@ -1,11 +1,11 @@
-import Data.Map
-
 module Types (
         CacheSolution,
         Solution,
         RequestMap,
         EndPoint)
     where
+
+import Data.Map
 
 data CacheSolution = CacheSolution {
     cacheId :: Int,
@@ -16,7 +16,7 @@ data Solution = Solution {
     s::[CacheSolution]
 }
 
-newtype RequestMap = RequestMap Map Int Int
+newtype RequestMap = RequestMap (Map Int Int)
 
 -- Request <id vidéo> <nombre de requêts>
 data Request = Request Int Int
