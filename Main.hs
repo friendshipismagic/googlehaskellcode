@@ -38,7 +38,7 @@ main = do
 
     let words_sizes = words video_size_line
     
-    let video_sizes =  (read :: String -> Int) video_size_line 
+    let video_sizes = map (read :: String -> Int) words_sizes 
 
     -- Parse each endpoints 
     let endpoints   = read_endpoints conf_E 
