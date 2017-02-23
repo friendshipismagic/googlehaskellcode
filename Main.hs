@@ -30,6 +30,19 @@ read_endpoints count = sequence $ map (\x ->  do
         requests=[]
         }) [1..count]
 
+read_requests :: Int -> IO [(Int,Int,Int)]
+read_requests count = sequence $ map(\x -> do
+        request_line <- getLine
+        let [id_video, id_endpoint, request_count] = map read $ words request_line :: [Int]
+        return (id_video, id_endpoint, request_count)
+        ) [1..count]
+
+match_requests :: [EndPoint] -> [(Int,Int,Int)] -> [EndPoint]
+match_requests endpoints requests =
+    map ( \(i, endpoint) ->
+            endpoint {requests=[ Request x z | (x,y,z) <- requests, y == i]}
+        ) (zip [1..] endpoints)
+
 main = do
     config_line <- getLine
     video_size_line <- getLine
@@ -41,5 +54,17 @@ main = do
     let video_sizes = map (read :: String -> Int) words_sizes 
 
     -- Parse each endpoints 
-    let endpoints   = read_endpoints conf_E 
+    endpoints <- read_endpoints conf_E 
+
+    -- Parse each requests
+    requests <- read_requests conf_R
+
+    -- Parse cache_capacity
+    cache_line <- getLine
+    let cache_capacity = read $ cache_line :: Int
+
+    let computed_endpoints = match_requests endpoints requests
+
+    -- let solution = naiveSolution computed_endpoints cache_capacity
+
     putStrLn "HelloHashCode"

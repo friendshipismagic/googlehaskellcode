@@ -7,7 +7,7 @@ import Data.Function
 foo :: Int -> Int -> Float
 foo = (/) `on` fromIntegral
 
-evalSolution :: [EndPoint] -> Solution -> Int
+evalSolution :: [EndPoint] -> Solution -> Float
 evalSolution endpoints sol = (1000*(sum gains)) `foo` n
     where
         gains = concat $ map (\x -> requestGains x sol) endpoints
