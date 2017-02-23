@@ -3,6 +3,8 @@ import qualified Data.Map.Strict as Map
 import Control.Monad
 
 import Types
+import Eval
+import Functions
 
 read_cache_servers_assoc :: Int -> IO[(Int,Int)]
 read_cache_servers_assoc count = 
@@ -59,12 +61,10 @@ main = do
     -- Parse each requests
     requests <- read_requests conf_R
 
-    -- Parse cache_capacity
-    cache_line <- getLine
-    let cache_capacity = read $ cache_line :: Int
-
     let computed_endpoints = match_requests endpoints requests
 
-    -- let solution = naiveSolution computed_endpoints cache_capacity
+    let solution = naiveSolution computed_endpoints conf_X
 
-    putStrLn "HelloHashCode"
+    print $ evalSolution endpoints solution
+
+
