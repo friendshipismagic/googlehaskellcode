@@ -1,29 +1,19 @@
-module Types (
-        CacheSolution,
-        Solution,
-        RequestMap,
-        EndPoint)
-    where
+module Types ( Solution(..), Request, EndPoint(..) ) where
 
-import Data.Map
+    import qualified Data.Map.Strict as Map
 
-data CacheSolution = CacheSolution {
-    cacheId :: Int,
-    videos :: [Int]
-}
+    data Solution = Solution {
+        s :: Map.Map Int Int -- Vidéo x id cache
+    }
 
-data Solution = Solution {
-    s::[CacheSolution]
-}
 
-newtype RequestMap = RequestMap (Map Int Int)
+    -- Request <id vidéo> <nombre de requêts>
+    data Request = Request Int Int
 
--- Request <id vidéo> <nombre de requêts>
-data Request = Request Int Int
+    data CacheCapacities = CacheCapacities (Map.Map Int Int) 
+    data EndPoint = EndPoint 
+        { latency :: Int
+        , cache_latencies :: Map.Map Int Int -- Numéro cache x latence
+        , requests :: [Request]
+        }
 
-data EndPoint = EndPoint {
-    latency :: Int,
-    cache_count :: Int,
-    cache_servers :: RequestMap,
-    requests :: [Request]
-}
